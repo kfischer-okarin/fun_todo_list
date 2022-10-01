@@ -19,6 +19,16 @@ class AcceptanceTestDSL {
   final AcceptanceTestDriver driver;
 
   AcceptanceTestDSL(this.driver);
+
+  Future<void> addTodo(String title) async {
+    await driver.addTodo(title);
+  }
+
+  Future<List<String>> listTodos() async => await driver.listTodos();
 }
 
-abstract class AcceptanceTestDriver {}
+abstract class AcceptanceTestDriver {
+  Future<void> addTodo(String title);
+
+  Future<List<String>> listTodos();
+}

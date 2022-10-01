@@ -1,0 +1,12 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'acceptance_test_dsl.dart';
+
+void acceptanceTests(AcceptanceTest test) {
+  test('Added todos should be visible in the todo overview', (dsl) async {
+    await dsl.addTodo('Buy milk');
+
+    final todos = await dsl.listTodos();
+
+    expect(todos, ['Buy milk']);
+  });
+}
