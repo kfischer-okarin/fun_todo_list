@@ -72,7 +72,9 @@ class _TodoListPageState extends State<TodoListPage> {
                             onPressed: () {
                               widget._service.addTodo(_title);
                               Navigator.pop(context);
-                              _todos = widget._service.listTodos();
+                              setState(() {
+                                _todos = widget._service.listTodos();
+                              });
                             },
                             child: const Text('Add'),
                           )
