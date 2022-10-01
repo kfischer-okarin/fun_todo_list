@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 
+import 'todo_list_page/todo_card.dart';
 import 'todo_list_page/todo_form.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -28,10 +29,7 @@ class _TodoListPageState extends State<TodoListPage> {
     return Scaffold(
         body: ListView(
           children: [
-            for (final todo in _todos)
-              ListTile(
-                title: Text(todo.title),
-              ),
+            for (final todo in _todos) TodoCard(todo),
           ],
         ),
         floatingActionButton: FloatingActionButton(
