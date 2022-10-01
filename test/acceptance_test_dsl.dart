@@ -2,16 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Run the defined acceptance tests with the specified driver
 void runAcceptanceTests(
-    AcceptanceTestDriver driver, void Function(AcceptanceTest) defineTests) {
-  void test(String description, AcceptanceTestBody test) {
-    testWidgets(description, (tester) async {
-      final dsl = AcceptanceTestDSL(driver);
-
-      await test(dsl);
-    });
+    {required Future<void> Function(String, AcceptanceTestBody) runTest,
+    required void Function(AcceptanceTest) tests}) {
+  void test(String description, AcceptanceTestBody test) async {
+    await runTest(description, test);
   }
 
-  defineTests(test);
+  tests(test);
 }
 
 typedef AcceptanceTest = void Function(String, AcceptanceTestBody);
