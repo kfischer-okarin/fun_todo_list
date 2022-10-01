@@ -8,6 +8,8 @@ guard :shell do
   }
 
   watch(/lib\/(.*).dart/) { |m|
+    next if run_all? m
+
     run_test "test/#{m[1]}_test.dart"
   }
 end
