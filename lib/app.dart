@@ -51,28 +51,33 @@ class _TodoListPageState extends State<TodoListPage> {
             showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return Column(
-                    children: [
-                      TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Title',
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _title = value;
-                          });
-                        },
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          widget._service.addTodo(_title);
-                          Navigator.pop(context);
-                          _todos = widget._service.listTodos();
-                        },
-                        child: const Text('Add'),
-                      )
-                    ],
-                  );
+                  return Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          const Text('New Todo',
+                              style: TextStyle(fontSize: 24)),
+                          TextField(
+                            autofocus: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Title',
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                _title = value;
+                              });
+                            },
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              widget._service.addTodo(_title);
+                              Navigator.pop(context);
+                              _todos = widget._service.listTodos();
+                            },
+                            child: const Text('Add'),
+                          )
+                        ],
+                      ));
                 });
           },
           tooltip: 'Add Todo',
