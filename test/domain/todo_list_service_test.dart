@@ -12,4 +12,19 @@ void main() {
       expect(todo.title, 'Buy milk');
     });
   });
+
+  group('listTodos', () {
+    test('return all added todos', () {
+      final service = TodoListService();
+      service.addTodo('Buy milk');
+      service.addTodo('Buy eggs');
+
+      final todos = service.listTodos();
+
+      expect(todos, [
+        Todo('Buy milk'),
+        Todo('Buy eggs'),
+      ]);
+    });
+  });
 }
