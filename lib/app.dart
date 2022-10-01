@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'domain/todo_list_service.dart';
 import 'pages/todo_list_page.dart';
@@ -10,9 +11,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fun To Do List',
-      home: TodoListPage(_service),
-    );
+    return Provider.value(
+        value: _service,
+        child: MaterialApp(
+          title: 'Fun To Do List',
+          home: TodoListPage(),
+        ));
   }
 }

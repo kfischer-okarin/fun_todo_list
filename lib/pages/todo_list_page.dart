@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 
 class TodoListPage extends StatefulWidget {
-  final TodoListService _service;
-
-  const TodoListPage(this._service, {super.key});
+  const TodoListPage({super.key});
 
   @override
   State<TodoListPage> createState() => _TodoListPageState();
 }
 
 class _TodoListPageState extends State<TodoListPage> {
+  TodoListService get _service =>
+      Provider.of<TodoListService>(context, listen: false);
   String _title = '';
   List<Todo> _todos = [];
 
   @override
   void initState() {
     super.initState();
-    _todos = widget._service.listTodos();
+    _todos = _service.listTodos();
   }
 
   @override
@@ -56,10 +57,10 @@ class _TodoListPageState extends State<TodoListPage> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              widget._service.addTodo(_title);
+                              _service.addTodo(_title);
                               Navigator.pop(context);
                               setState(() {
-                                _todos = widget._service.listTodos();
+                                _todos = _service.listTodos();
                               });
                             },
                             child: const Text('Add'),
