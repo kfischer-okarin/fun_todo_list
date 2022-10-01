@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 
+import 'todo_list_page/todo_form.dart';
+
 class TodoListPage extends StatefulWidget {
   const TodoListPage({super.key});
 
@@ -13,7 +15,6 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   TodoListService get _service =>
       Provider.of<TodoListService>(context, listen: false);
-  String _title = '';
   List<Todo> _todos = [];
 
   @override
@@ -38,35 +39,13 @@ class _TodoListPageState extends State<TodoListPage> {
             showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          const Text('New Todo',
-                              style: TextStyle(fontSize: 24)),
-                          TextField(
-                            autofocus: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Title',
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _title = value;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _service.addTodo(_title);
-                              Navigator.pop(context);
-                              setState(() {
-                                _todos = _service.listTodos();
-                              });
-                            },
-                            child: const Text('Add'),
-                          )
-                        ],
-                      ));
+                  return TodoForm(onSubmit: (title) {
+                    _service.addTodo(title);
+                    Navigator.pop(context);
+                    setState(() {
+                      _todos = _service.listTodos();
+                    });
+                  });
                 });
           },
           tooltip: 'Add Todo',
