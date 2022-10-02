@@ -1,4 +1,4 @@
-import 'package:uuid/uuid.dart';
+import 'id.dart';
 
 class Todo {
   final TodoId id;
@@ -17,16 +17,8 @@ class Todo {
   }
 }
 
-class TodoId {
-  final String value;
+class TodoId extends Id {
+  const TodoId(String value) : super(value);
 
-  const TodoId(this.value);
-
-  factory TodoId.generate() => TodoId(const Uuid().v4());
-
-  @override
-  bool operator ==(Object other) => other is TodoId && value == other.value;
-
-  @override
-  int get hashCode => Object.hash('TodoId', value);
+  factory TodoId.generate() => TodoId(Id.generateValue());
 }

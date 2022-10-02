@@ -1,4 +1,4 @@
-import 'package:uuid/uuid.dart';
+import 'id.dart';
 
 abstract class Event {
   final EventId id;
@@ -49,14 +49,8 @@ class TodoAdded extends Event {
   }
 }
 
-class EventId {
-  final String value;
+class EventId extends Id {
+  const EventId(String value) : super(value);
 
-  const EventId(this.value);
-
-  factory EventId.generate() => EventId(const Uuid().v4());
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(Object other) => other is EventId && value == other.value;
+  factory EventId.generate() => EventId(Id.generateValue());
 }
