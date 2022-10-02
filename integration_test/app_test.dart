@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:fun_todo_list/app.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
+import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
+import 'package:fun_todo_list/infra/json_file_event_repository.dart';
 import 'package:fun_todo_list/pages/todo_list_page/todo_card.dart';
 
 import '../test/acceptance_test_dsl.dart';
@@ -11,10 +16,9 @@ import '../test/acceptance_tests.dart';
 
 class _WidgetTesterDriver implements AcceptanceTestDriver {
   final WidgetTester tester;
+  EventSourcedTodoRepository? _todoRepository;
 
-  _WidgetTesterDriver(this.tester) {
-    TodoListService.todos.clear();
-  }
+  _WidgetTesterDriver(this.tester);
 
   @override
   Future<void> addTodo(String title) async {
@@ -35,13 +39,23 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
 
   @override
   Future<void> restartApp() async {
-    // Add unique key to app to force rebuild
-    await tester.pumpWidget(App(TodoListService(), key: UniqueKey()));
+    await tester
+        .pumpWidget(App(TodoListService(_todoRepository!), key: UniqueKey()));
   }
 
   Future<void> _openAppIfNecessary() async {
     if (find.byType(App).precache()) {
       return;
+    }
+
+    if (_todoRepository == null) {
+      final documentsDirectory = await getApplicationDocumentsDirectory();
+      final jsonFile = File('${documentsDirectory.path}/todos.json');
+      if (jsonFile.existsSync()) {
+        jsonFile.deleteSync();
+      }
+      final eventRepository = JSONFileEventRepository(jsonFile);
+      _todoRepository = EventSourcedTodoRepository(eventRepository);
     }
 
     await restartApp();

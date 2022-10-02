@@ -1,14 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
+import 'package:fun_todo_list/domain/todo_repository.dart';
+import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
+import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
 
 import 'acceptance_test_dsl.dart';
 import 'acceptance_tests.dart';
 
 class _TodoListServiceDriver implements AcceptanceTestDriver {
-  TodoListService _service = TodoListService();
+  final TodoRepository _todoRepository =
+      EventSourcedTodoRepository(InMemoryEventRepository());
+  late TodoListService _service;
 
   _TodoListServiceDriver() {
-    TodoListService.todos.clear();
+    restartApp();
   }
 
   @override
@@ -23,7 +29,7 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
 
   @override
   Future<void> restartApp() async {
-    _service = TodoListService();
+    _service = TodoListService(_todoRepository);
   }
 }
 

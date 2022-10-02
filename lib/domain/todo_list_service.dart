@@ -1,13 +1,16 @@
 import 'todo.dart';
+import 'todo_repository.dart';
 
 class TodoListService {
-  static final todos = <Todo>[];
+  final TodoRepository _todoRepository;
+
+  TodoListService(this._todoRepository);
 
   Todo addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);
-    todos.add(todo);
+    _todoRepository.add(todo);
     return todo;
   }
 
-  List<Todo> listTodos() => todos;
+  List<Todo> listTodos() => _todoRepository.values.toList();
 }
