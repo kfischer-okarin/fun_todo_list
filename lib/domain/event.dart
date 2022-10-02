@@ -24,17 +24,20 @@ abstract class Event {
 }
 
 class TodoAdded extends Event {
+  final String todoId;
   final String title;
 
-  TodoAdded({required super.id, required this.title});
+  TodoAdded({required super.id, required this.todoId, required this.title});
 
   TodoAdded.fromJson(Map<String, dynamic> json)
       : title = json['title'],
+        todoId = json['todoId'],
         super(id: EventId(json['id']));
 
   @override
   Map<String, dynamic> toJson() => {
         ...super.toJson(),
+        'todoId': todoId,
         'title': title,
       };
 

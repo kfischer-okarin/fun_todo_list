@@ -25,12 +25,18 @@ void main() {
     test('Stores event as JSON', () {
       final repository = buildRepository();
 
-      repository.add(TodoAdded(id: const EventId('id'), title: 'Buy milk'));
+      repository.add(
+          TodoAdded(id: const EventId('id'), todoId: 'abc', title: 'Buy milk'));
 
       expect(
           file.readAsStringSync(),
           jsonEncode([
-            {"type": "TodoAdded", "id": "id", "title": "Buy milk"}
+            {
+              "type": "TodoAdded",
+              "id": "id",
+              "todoId": "abc",
+              "title": "Buy milk"
+            }
           ]));
     });
   });
@@ -38,15 +44,14 @@ void main() {
   group('list', () {
     test('Reads existing events from file', () {
       var repository = buildRepository();
+      final event =
+          TodoAdded(id: const EventId('id'), todoId: 'abc', title: 'Buy milk');
 
-      repository.add(TodoAdded(id: const EventId('id'), title: 'Buy milk'));
+      repository.add(event);
 
       repository = buildRepository();
 
-      expect(
-          repository,
-          containsAllInOrder(
-              [TodoAdded(id: const EventId('id'), title: 'Buy milk')]));
+      expect(repository, containsAllInOrder([event]));
     });
   });
 }
