@@ -27,10 +27,8 @@ void main() {
 
       final todos = service.listTodos();
 
-      expect(todos, [
-        Todo('Buy milk'),
-        Todo('Buy eggs'),
-      ]);
+      final titles = [for (final todo in todos) todo.title];
+      expect(titles, ['Buy milk', 'Buy eggs']);
     });
   });
 }
