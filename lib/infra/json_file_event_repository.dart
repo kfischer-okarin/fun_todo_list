@@ -12,6 +12,10 @@ class JSONFileEventRepository extends EventRepository {
     if (!_file.existsSync()) {
       _file.writeAsStringSync('[]');
     }
+    _events.addAll([
+      for (final json in jsonDecode(_file.readAsStringSync()))
+        Event.fromJson(json)
+    ]);
   }
 
   @override

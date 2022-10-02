@@ -34,4 +34,19 @@ void main() {
           ]));
     });
   });
+
+  group('list', () {
+    test('Reads existing events from file', () {
+      var repository = buildRepository();
+
+      repository.add(TodoAdded(id: const EventId('id'), title: 'Buy milk'));
+
+      repository = buildRepository();
+
+      expect(
+          repository,
+          containsAllInOrder(
+              [TodoAdded(id: const EventId('id'), title: 'Buy milk')]));
+    });
+  });
 }

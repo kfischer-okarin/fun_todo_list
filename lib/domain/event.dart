@@ -3,6 +3,15 @@ abstract class Event {
 
   const Event({required this.id});
 
+  static Event fromJson(Map<String, dynamic> json) {
+    switch (json['type']) {
+      case 'TodoAdded':
+        return TodoAdded.fromJson(json);
+      default:
+        throw Exception('Unknown event type: ${json['type']}');
+    }
+  }
+
   Map<String, dynamic> toJson() => {
         'type': runtimeType.toString(),
         'id': id.value,
@@ -18,6 +27,10 @@ class TodoAdded extends Event {
   final String title;
 
   TodoAdded({required super.id, required this.title});
+
+  TodoAdded.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        super(id: EventId(json['id']));
 
   @override
   Map<String, dynamic> toJson() => {
