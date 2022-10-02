@@ -13,7 +13,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider.value(
         value: _service,
-        child: MaterialApp(
+        child: const MaterialApp(
           title: 'Fun To Do List',
           home: TodoListPage(),
         ));
