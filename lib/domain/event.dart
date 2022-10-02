@@ -1,16 +1,19 @@
 abstract class Event {
-  Map<String, dynamic> toJson();
+  final EventId id;
+
+  const Event({required this.id});
+
+  Map<String, dynamic> toJson() => {'id': id.value};
 }
 
 class TodoAdded extends Event {
-  final EventId id;
   final String title;
 
-  TodoAdded({required this.id, required this.title});
+  TodoAdded({required super.id, required this.title});
 
   @override
   Map<String, dynamic> toJson() => {
-        'id': id.value,
+        ...super.toJson(),
         'title': title,
       };
 }
