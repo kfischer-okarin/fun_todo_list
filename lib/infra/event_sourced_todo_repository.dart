@@ -9,7 +9,7 @@ class EventSourcedTodoRepository extends TodoRepository {
   EventSourcedTodoRepository(this._eventRepository);
 
   @override
-  Iterable<TodoId> get keys => [];
+  Iterable<TodoId> get keys => _todos.keys;
 
   @override
   Todo? operator [](Object? key) => _todos[key];
