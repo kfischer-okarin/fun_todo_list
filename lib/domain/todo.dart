@@ -13,7 +13,7 @@ class Todo {
 
   @override
   String toString() {
-    return 'Todo{id: ${id.value}, title: $title}';
+    return 'Todo{id: ${id.value.substring(0, 3)}..., title: $title}';
   }
 }
 
