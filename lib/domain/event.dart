@@ -3,7 +3,10 @@ abstract class Event {
 
   const Event({required this.id});
 
-  Map<String, dynamic> toJson() => {'id': id.value};
+  Map<String, dynamic> toJson() => {
+        'type': runtimeType.toString(),
+        'id': id.value,
+      };
 }
 
 class TodoAdded extends Event {

@@ -30,7 +30,7 @@ void main() {
       expect(
           file.readAsStringSync(),
           jsonEncode([
-            {"id": "id", "title": "Buy milk"}
+            {"type": "TodoAdded", "id": "id", "title": "Buy milk"}
           ]));
     });
   });
