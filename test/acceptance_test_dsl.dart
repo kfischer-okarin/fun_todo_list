@@ -25,10 +25,14 @@ class AcceptanceTestDSL {
   }
 
   Future<List<String>> listTodos() async => await driver.listTodos();
+
+  Future<void> restartApp() async => await driver.restartApp();
 }
 
 abstract class AcceptanceTestDriver {
   Future<void> addTodo(String title);
 
   Future<List<String>> listTodos();
+
+  Future<void> restartApp();
 }

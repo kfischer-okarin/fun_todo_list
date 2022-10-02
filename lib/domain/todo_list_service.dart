@@ -1,13 +1,13 @@
 class TodoListService {
-  final _todos = <Todo>[];
+  static final todos = <Todo>[];
 
   Todo addTodo(String title) {
     final todo = Todo(title);
-    _todos.add(todo);
+    todos.add(todo);
     return todo;
   }
 
-  List<Todo> listTodos() => _todos;
+  List<Todo> listTodos() => todos;
 }
 
 class Todo {

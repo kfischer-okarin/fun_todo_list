@@ -3,6 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 
 void main() {
+  setUp(() {
+    TodoListService.todos.clear();
+  });
+
   group('addTodo', () {
     test('return added todo', () {
       final service = TodoListService();

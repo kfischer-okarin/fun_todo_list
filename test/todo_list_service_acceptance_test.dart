@@ -5,10 +5,10 @@ import 'acceptance_test_dsl.dart';
 import 'acceptance_tests.dart';
 
 class _TodoListServiceDriver implements AcceptanceTestDriver {
-  late final TodoListService _service;
+  TodoListService _service = TodoListService();
 
   _TodoListServiceDriver() {
-    _service = TodoListService();
+    TodoListService.todos.clear();
   }
 
   @override
@@ -19,6 +19,11 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
   @override
   Future<List<String>> listTodos() async {
     return _service.listTodos().map((todo) => todo.title).toList();
+  }
+
+  @override
+  Future<void> restartApp() async {
+    _service = TodoListService();
   }
 }
 

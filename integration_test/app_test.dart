@@ -12,7 +12,9 @@ import '../test/acceptance_tests.dart';
 class _WidgetTesterDriver implements AcceptanceTestDriver {
   final WidgetTester tester;
 
-  _WidgetTesterDriver(this.tester);
+  _WidgetTesterDriver(this.tester) {
+    TodoListService.todos.clear();
+  }
 
   @override
   Future<void> addTodo(String title) async {
@@ -31,13 +33,18 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     return cards.map((card) => card.todo.title).toList();
   }
 
+  @override
+  Future<void> restartApp() async {
+    // Add unique key to app to force rebuild
+    await tester.pumpWidget(App(TodoListService(), key: UniqueKey()));
+  }
+
   Future<void> _openAppIfNecessary() async {
     if (find.byType(App).precache()) {
       return;
     }
 
-    // Add unique key to app to force rebuild
-    await tester.pumpWidget(App(TodoListService(), key: UniqueKey()));
+    await restartApp();
   }
 }
 

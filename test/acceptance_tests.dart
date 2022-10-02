@@ -6,7 +6,14 @@ void acceptanceTests(AcceptanceTest test) {
     await dsl.addTodo('Buy milk');
 
     final todos = await dsl.listTodos();
+    expect(todos, ['Buy milk']);
+  });
 
+  test('Todos should be persisted over sessions', (dsl) async {
+    await dsl.addTodo('Buy milk');
+    await dsl.restartApp();
+
+    final todos = await dsl.listTodos();
     expect(todos, ['Buy milk']);
   });
 }
