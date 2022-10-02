@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:fun_todo_list/domain/todo.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 
 import 'todo_list_page/todo_card.dart';

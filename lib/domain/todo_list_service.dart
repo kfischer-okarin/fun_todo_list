@@ -1,3 +1,5 @@
+import 'todo.dart';
+
 class TodoListService {
   static final todos = <Todo>[];
 
@@ -8,19 +10,4 @@ class TodoListService {
   }
 
   List<Todo> listTodos() => todos;
-}
-
-class Todo {
-  final String title;
-
-  Todo(this.title);
-
-  @override
-  // ignore: hash_and_equals
-  bool operator ==(Object other) => other is Todo && title == other.title;
-
-  @override
-  String toString() {
-    return 'Todo{title: $title}';
-  }
 }
