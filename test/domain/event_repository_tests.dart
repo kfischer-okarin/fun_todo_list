@@ -11,7 +11,20 @@ void testEventRepository(EventRepository Function() buildRepository) {
 
       repository.add(event);
 
-      expect(repository, contains(event));
+      expect(repository, containsAllInOrder([event]));
+    });
+  });
+
+  group('toList', () {
+    test('returns events in addition order', () {
+      final repository = buildRepository();
+      final event1 = TodoAdded(id: const EventId('id'), title: 'Buy milk');
+      final event2 = TodoAdded(id: const EventId('id2'), title: 'Buy Eggs');
+
+      repository.add(event1);
+      repository.add(event2);
+
+      expect(repository.toList(), [event1, event2]);
     });
   });
 }
