@@ -4,7 +4,7 @@ class TodoListService {
   static final todos = <Todo>[];
 
   Todo addTodo(String title) {
-    final todo = Todo(title);
+    final todo = Todo(id: TodoId.generate(), title: title);
     todos.add(todo);
     return todo;
   }
