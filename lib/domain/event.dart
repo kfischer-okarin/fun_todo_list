@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 abstract class Event {
   final EventId id;
 
@@ -51,6 +53,8 @@ class EventId {
   final String value;
 
   const EventId(this.value);
+
+  factory EventId.generate() => EventId(const Uuid().v4());
 
   @override
   // ignore: hash_and_equals

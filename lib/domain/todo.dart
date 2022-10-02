@@ -25,6 +25,8 @@ class TodoId {
   factory TodoId.generate() => TodoId(const Uuid().v4());
 
   @override
-  // ignore: hash_and_equals
   bool operator ==(Object other) => other is TodoId && value == other.value;
+
+  @override
+  int get hashCode => Object.hash('TodoId', value);
 }
