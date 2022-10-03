@@ -17,4 +17,8 @@ class TodoListService {
   void checkTodo(Todo todo) {
     todo.check();
   }
+
+  void uncheckTodo(Todo todo) {
+    todo.uncheck();
+  }
 }

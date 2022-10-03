@@ -40,12 +40,16 @@ class EventSourcedTodoRepository extends TodoRepository {
     Map<TodoId, Todo> result = {};
 
     for (final event in _eventRepository) {
-      if (event is TodoAdded) {
+      if (event is TodoEvent) {
         final id = TodoId(event.todoId);
-        result[id] = Todo(id: id, title: event.title);
-      } else if (event is TodoChecked) {
-        final id = TodoId(event.todoId);
-        result[id]!.check();
+
+        if (event is TodoAdded) {
+          result[id] = Todo(id: id, title: event.title);
+        } else if (event is TodoChecked) {
+          result[id]!.check();
+        } else if (event is TodoUnchecked) {
+          result[id]!.uncheck();
+        }
       }
     }
 
@@ -64,6 +68,13 @@ class _TodoProxy extends Todo {
   void check() {
     super.check();
     _eventRepository.add(TodoChecked(
+        id: EventId.generate(), time: _clock.now, todoId: id.value));
+  }
+
+  @override
+  void uncheck() {
+    super.uncheck();
+    _eventRepository.add(TodoUnchecked(
         id: EventId.generate(), time: _clock.now, todoId: id.value));
   }
 }

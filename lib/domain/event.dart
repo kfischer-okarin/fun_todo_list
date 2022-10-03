@@ -98,6 +98,17 @@ class TodoChecked extends TodoEvent {
             todoId: json['todoId']);
 }
 
+class TodoUnchecked extends TodoEvent {
+  const TodoUnchecked(
+      {required super.id, required super.time, required super.todoId});
+
+  TodoUnchecked.fromJson(Map<String, dynamic> json)
+      : super(
+            id: EventId(json['id']),
+            time: DateTime.parse(json['time']),
+            todoId: json['todoId']);
+}
+
 class EventId extends Id {
   const EventId(String value) : super(value);
 

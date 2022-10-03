@@ -53,4 +53,28 @@ void main() {
       expect(persistedTodo.checked, true);
     });
   });
+
+  group('uncheckTodo', () {
+    test('updates the passed todo', () {
+      final service = buildService();
+      final todo = service.addTodo('Buy milk');
+      service.checkTodo(todo);
+
+      service.uncheckTodo(todo);
+
+      expect(todo.checked, false);
+    });
+
+    test('updates the persisted todo', () {
+      final service = buildService();
+      final todo = service.addTodo('Buy milk');
+      service.checkTodo(todo);
+
+      service.uncheckTodo(todo);
+
+      final persistedTodo =
+          service.listTodos().firstWhere((todo) => todo.id == todo.id);
+      expect(persistedTodo.checked, false);
+    });
+  });
 }

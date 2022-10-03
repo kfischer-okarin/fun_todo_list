@@ -15,6 +15,10 @@ class Todo {
     _checked = true;
   }
 
+  void uncheck() {
+    _checked = false;
+  }
+
   @override
   // ignore: hash_and_equals
   bool operator ==(Object other) =>
