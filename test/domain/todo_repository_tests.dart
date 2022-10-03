@@ -26,4 +26,16 @@ void testTodoRepository(TodoRepository Function() buildRepository) {
       expect(repository.values, containsAll([todo1, todo2]));
     });
   });
+
+  group('changing todos', () {
+    test('persists the change', () {
+      final repository = buildRepository();
+      final todo = Todo(id: TodoId.generate(), title: 'Buy Milk');
+      repository.add(todo);
+
+      repository[todo.id]!.check();
+
+      expect(repository[todo.id]!.checked, true);
+    });
+  });
 }

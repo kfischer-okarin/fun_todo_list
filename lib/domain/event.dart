@@ -9,6 +9,8 @@ abstract class Event {
     switch (json['type']) {
       case 'TodoAdded':
         return TodoAdded.fromJson(json);
+      case 'TodoChecked':
+        return TodoChecked.fromJson(json);
       default:
         throw Exception('Unknown event type: ${json['type']}');
     }
@@ -46,6 +48,27 @@ class TodoAdded extends Event {
   @override
   String toString() {
     return 'TodoAdded{id: ${id.value}, title: $title}';
+  }
+}
+
+class TodoChecked extends Event {
+  final String todoId;
+
+  TodoChecked({required super.id, required this.todoId});
+
+  TodoChecked.fromJson(Map<String, dynamic> json)
+      : todoId = json['todoId'],
+        super(id: EventId(json['id']));
+
+  @override
+  Map<String, dynamic> toJson() => {
+        ...super.toJson(),
+        'todoId': todoId,
+      };
+
+  @override
+  String toString() {
+    return 'TodoChecked{id: ${id.value}}';
   }
 }
 

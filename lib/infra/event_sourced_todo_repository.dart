@@ -12,7 +12,15 @@ class EventSourcedTodoRepository extends TodoRepository {
   Iterable<TodoId> get keys => _todos.keys;
 
   @override
-  Todo? operator [](Object? key) => _todos[key];
+  Todo? operator [](Object? key) {
+    var todo = _todos[key];
+
+    if (todo != null) {
+      todo = _TodoProxy(_eventRepository, todo);
+    }
+
+    return todo;
+  }
 
   @override
   void add(Todo todo) {
@@ -27,9 +35,25 @@ class EventSourcedTodoRepository extends TodoRepository {
       if (event is TodoAdded) {
         final id = TodoId(event.todoId);
         result[id] = Todo(id: id, title: event.title);
+      } else if (event is TodoChecked) {
+        final id = TodoId(event.todoId);
+        result[id]!.check();
       }
     }
 
     return result;
+  }
+}
+
+class _TodoProxy extends Todo {
+  EventRepository _eventRepository;
+
+  _TodoProxy(this._eventRepository, Todo todo)
+      : super(id: todo.id, title: todo.title, checked: todo.checked);
+
+  @override
+  void check() {
+    super.check();
+    _eventRepository.add(TodoChecked(id: EventId.generate(), todoId: id.value));
   }
 }

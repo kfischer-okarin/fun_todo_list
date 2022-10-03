@@ -3,8 +3,17 @@ import 'id.dart';
 class Todo {
   final TodoId id;
   final String title;
+  late bool _checked;
 
-  Todo({required this.id, required this.title});
+  Todo({required this.id, required this.title, checked = false}) {
+    _checked = checked;
+  }
+
+  bool get checked => _checked;
+
+  void check() {
+    _checked = true;
+  }
 
   @override
   // ignore: hash_and_equals
