@@ -46,7 +46,7 @@ class EventSourcedTodoRepository extends TodoRepository {
 }
 
 class _TodoProxy extends Todo {
-  EventRepository _eventRepository;
+  final EventRepository _eventRepository;
 
   _TodoProxy(this._eventRepository, Todo todo)
       : super(id: todo.id, title: todo.title, checked: todo.checked);
