@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
+@immutable
 abstract class Id extends Equatable {
   final String value;
 

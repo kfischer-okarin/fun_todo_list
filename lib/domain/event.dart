@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:equatable/equatable.dart';
 
 import 'id.dart';
 
+@immutable
 abstract class Event extends Equatable {
   final EventId id;
 
