@@ -33,4 +33,18 @@ void acceptanceTests(AcceptanceTest test) {
       {'title': 'Buy eggs', 'checked': true}
     ]);
   });
+
+  test('Todos can be unchecked', (dsl) async {
+    await dsl.addTodo('Buy milk');
+    await dsl.addTodo('Buy eggs');
+    await dsl.checkTodo('Buy milk');
+
+    await dsl.uncheckTodo('Buy milk');
+
+    final todos = await dsl.listTodos();
+    expect(todos, [
+      {'title': 'Buy milk', 'checked': false},
+      {'title': 'Buy eggs', 'checked': false}
+    ]);
+  });
 }

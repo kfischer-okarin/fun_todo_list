@@ -31,6 +31,10 @@ class AcceptanceTestDSL {
     await driver.checkTodo(title);
   }
 
+  Future<void> uncheckTodo(String title) async {
+    await driver.uncheckTodo(title);
+  }
+
   Future<void> restartApp() async => await driver.restartApp();
 }
 
@@ -42,4 +46,6 @@ abstract class AcceptanceTestDriver {
   Future<void> restartApp();
 
   Future<void> checkTodo(String title);
+
+  Future<void> uncheckTodo(String title);
 }

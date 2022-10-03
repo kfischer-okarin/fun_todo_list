@@ -5,8 +5,10 @@ import 'package:fun_todo_list/domain/todo.dart';
 class TodoCard extends StatelessWidget {
   final Todo todo;
   final Function() onCheck;
+  final Function() onUncheck;
 
-  const TodoCard(this.todo, {super.key, required this.onCheck});
+  const TodoCard(this.todo,
+      {super.key, required this.onCheck, required this.onUncheck});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class TodoCard extends StatelessWidget {
             Checkbox(
                 value: todo.checked,
                 onChanged: (_) {
-                  if (!todo.checked) {
+                  if (todo.checked) {
+                    onUncheck();
+                  } else {
                     onCheck();
                   }
                 }),

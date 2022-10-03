@@ -34,6 +34,9 @@ class _TodoListPageState extends State<TodoListPage> {
               TodoCard(todo, onCheck: () {
                 _service.checkTodo(todo);
                 reload();
+              }, onUncheck: () {
+                _service.uncheckTodo(todo);
+                reload();
               })
           ],
         ),

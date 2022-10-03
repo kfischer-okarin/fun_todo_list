@@ -40,6 +40,12 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
     final todo = _service.listTodos().firstWhere((todo) => todo.title == title);
     _service.checkTodo(todo);
   }
+
+  @override
+  Future<void> uncheckTodo(String title) async {
+    final todo = _service.listTodos().firstWhere((todo) => todo.title == title);
+    _service.uncheckTodo(todo);
+  }
 }
 
 void main() {

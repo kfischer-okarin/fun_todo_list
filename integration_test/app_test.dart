@@ -58,6 +58,11 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await tester.pumpAndSettle();
   }
 
+  @override
+  Future<void> uncheckTodo(String title) async {
+    await checkTodo(title);
+  }
+
   Future<void> _openAppIfNecessary() async {
     if (find.byType(App).precache()) {
       return;
