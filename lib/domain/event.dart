@@ -27,6 +27,13 @@ abstract class Event extends Equatable {
 
   @override
   List<Object?> get props => [id];
+
+  String get propsString => 'id: ${id.value.substring(0, 3)}...';
+
+  @override
+  String toString() {
+    return '$runtimeType($propsString)';
+  }
 }
 
 class TodoAdded extends Event {
@@ -52,9 +59,8 @@ class TodoAdded extends Event {
   List<Object?> get props => [...super.props, todoId, title];
 
   @override
-  String toString() {
-    return 'TodoAdded{id: ${id.value.substring(0, 3)}..., todoId: ${todoId.substring(0, 3)}..., title: $title}';
-  }
+  String get propsString =>
+      '${super.propsString}, todoId: ${todoId.substring(0, 3)}..., title: $title';
 }
 
 class TodoChecked extends Event {
@@ -76,9 +82,8 @@ class TodoChecked extends Event {
   List<Object?> get props => [...super.props, todoId];
 
   @override
-  String toString() {
-    return 'TodoChecked{id: ${id.value.substring(0, 3)}..., todoId: ${todoId.substring(0, 3)}...}';
-  }
+  String get propsString =>
+      '${super.propsString}, todoId: ${todoId.substring(0, 3)}...';
 }
 
 class EventId extends Id {
