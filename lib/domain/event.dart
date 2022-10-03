@@ -10,17 +10,6 @@ abstract class Event extends Equatable {
 
   const Event({required this.id, required this.time});
 
-  static Event fromJson(Map<String, dynamic> json) {
-    switch (json['type']) {
-      case 'TodoAdded':
-        return TodoAdded.fromJson(json);
-      case 'TodoChecked':
-        return TodoChecked.fromJson(json);
-      default:
-        throw Exception('Unknown event type: ${json['type']}');
-    }
-  }
-
   Map<String, dynamic> toJson() => {
         'type': runtimeType.toString(),
         'id': id.value,
@@ -67,13 +56,6 @@ class TodoAdded extends TodoEvent {
       required super.todoId,
       required this.title});
 
-  TodoAdded.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        super(
-            id: EventId(json['id']),
-            time: DateTime.parse(json['time']),
-            todoId: json['todoId']);
-
   @override
   Map<String, dynamic> toJson() => {
         ...super.toJson(),
@@ -90,23 +72,11 @@ class TodoAdded extends TodoEvent {
 class TodoChecked extends TodoEvent {
   const TodoChecked(
       {required super.id, required super.time, required super.todoId});
-
-  TodoChecked.fromJson(Map<String, dynamic> json)
-      : super(
-            id: EventId(json['id']),
-            time: DateTime.parse(json['time']),
-            todoId: json['todoId']);
 }
 
 class TodoUnchecked extends TodoEvent {
   const TodoUnchecked(
       {required super.id, required super.time, required super.todoId});
-
-  TodoUnchecked.fromJson(Map<String, dynamic> json)
-      : super(
-            id: EventId(json['id']),
-            time: DateTime.parse(json['time']),
-            todoId: json['todoId']);
 }
 
 class EventId extends Id {

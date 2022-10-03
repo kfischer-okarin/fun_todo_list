@@ -13,8 +13,7 @@ class JSONFileEventRepository extends EventRepository {
       _file.writeAsStringSync('[]');
     }
     _events.addAll([
-      for (final json in jsonDecode(_file.readAsStringSync()))
-        Event.fromJson(json)
+      for (final json in jsonDecode(_file.readAsStringSync())) _fromJson(json)
     ]);
   }
 
@@ -25,5 +24,21 @@ class JSONFileEventRepository extends EventRepository {
   void add(Event event) {
     _events.add(event);
     _file.writeAsStringSync(jsonEncode(_events));
+  }
+
+  Event _fromJson(Map<String, dynamic> json) {
+    final id = EventId(json['id']);
+    final time = DateTime.parse(json['time']);
+    switch (json['type']) {
+      case 'TodoAdded':
+        return TodoAdded(
+            id: id, time: time, todoId: json['todoId'], title: json['title']);
+      case 'TodoChecked':
+        return TodoChecked(id: id, time: time, todoId: json['todoId']);
+      case 'TodoUnchecked':
+        return TodoUnchecked(id: id, time: time, todoId: json['todoId']);
+      default:
+        throw Exception('Unknown event type: ${json['type']}');
+    }
   }
 }
