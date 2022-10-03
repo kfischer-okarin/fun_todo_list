@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -21,44 +20,27 @@ void main() {
 
   testEventRepository(buildRepository);
 
-  group('add', () {
-    test('Stores event as JSON', () {
-      final repository = buildRepository();
+  test('Stores events as JSON and restored them', () {
+    var repository = buildRepository();
 
-      repository.add(TodoAdded(
-          id: const EventId('id1'),
-          time: DateTime(2022, 10, 3, 12, 0, 0),
-          todoId: 'abc',
-          title: 'Buy milk'));
+    final events = [
+      TodoAdded(
+          id: const EventId('1'),
+          time: DateTime(2020, 1, 1),
+          todoId: '1',
+          title: 'Buy milk'),
+      TodoChecked(
+          id: const EventId('2'), time: DateTime(2020, 1, 2), todoId: '1'),
+      TodoUnchecked(
+          id: const EventId('3'), time: DateTime(2020, 1, 3), todoId: '1'),
+    ];
 
-      expect(
-          file.readAsStringSync(),
-          jsonEncode([
-            {
-              "type": "TodoAdded",
-              "id": "id1",
-              "time": "2022-10-03T12:00:00.000",
-              "todoId": "abc",
-              "title": "Buy milk"
-            }
-          ]));
-    });
-  });
-
-  group('list', () {
-    test('Reads existing events from file', () {
-      var repository = buildRepository();
-      final event = TodoAdded(
-          id: const EventId('id1'),
-          time: DateTime.now(),
-          todoId: 'abc',
-          title: 'Buy milk');
-
+    for (final event in events) {
       repository.add(event);
+    }
 
-      repository = buildRepository();
+    repository = buildRepository();
 
-      expect(repository, containsAllInOrder([event]));
-    });
+    expect(repository.toList(), events);
   });
 }
