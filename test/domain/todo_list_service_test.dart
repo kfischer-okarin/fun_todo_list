@@ -30,4 +30,26 @@ void main() {
       expect(titles, ['Buy milk', 'Buy eggs']);
     });
   });
+
+  group('checkTodo', () {
+    test('updates the passed todo', () {
+      final service = buildService();
+      final todo = service.addTodo('Buy milk');
+
+      service.checkTodo(todo);
+
+      expect(todo.checked, true);
+    });
+
+    test('updates the persisted todo', () {
+      final service = buildService();
+      final todo = service.addTodo('Buy milk');
+
+      service.checkTodo(todo);
+
+      final persistedTodo =
+          service.listTodos().firstWhere((todo) => todo.id == todo.id);
+      expect(persistedTodo.checked, true);
+    });
+  });
 }

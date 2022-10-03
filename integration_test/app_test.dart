@@ -6,6 +6,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:fun_todo_list/app.dart';
+import 'package:fun_todo_list/pages/todo_list_page.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/json_file_event_repository.dart';
@@ -35,7 +36,8 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await _openAppIfNecessary();
     final cards = tester.widgetList<TodoCard>(find.byType(TodoCard));
     return [
-      for (final card in cards) {'title': card.todo.title, 'checked': false}
+      for (final card in cards)
+        {'title': card.todo.title, 'checked': card.todo.checked}
     ];
   }
 
@@ -43,6 +45,19 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   Future<void> restartApp() async {
     await tester
         .pumpWidget(App(TodoListService(_todoRepository!), key: UniqueKey()));
+  }
+
+  @override
+  Future<void> checkTodo(String title) async {
+    _assertPage(TodoListPage);
+
+    final checkbox = find.descendant(
+        of: find.byWidgetPredicate(
+            (widget) => widget is TodoCard && widget.todo.title == title),
+        matching: find.byType(Checkbox));
+
+    await tester.tap(checkbox);
+    await tester.pumpAndSettle();
   }
 
   Future<void> _openAppIfNecessary() async {
@@ -61,6 +76,12 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     }
 
     await restartApp();
+  }
+
+  void _assertPage(Type pageType) {
+    if (!find.byType(pageType).precache()) {
+      throw StateError('The page $pageType is not open');
+    }
   }
 }
 

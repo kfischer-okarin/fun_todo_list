@@ -9,8 +9,12 @@ class TodoListService {
   Todo addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);
     _todoRepository.add(todo);
-    return todo;
+    return _todoRepository[todo.id]!;
   }
 
   List<Todo> listTodos() => _todoRepository.values.toList();
+
+  void checkTodo(Todo todo) {
+    todo.check();
+  }
 }

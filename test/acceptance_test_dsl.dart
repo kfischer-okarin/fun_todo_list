@@ -27,6 +27,10 @@ class AcceptanceTestDSL {
   Future<List<Map<String, dynamic>>> listTodos() async =>
       await driver.listTodos();
 
+  Future<void> checkTodo(String title) async {
+    await driver.checkTodo(title);
+  }
+
   Future<void> restartApp() async => await driver.restartApp();
 }
 
@@ -36,4 +40,6 @@ abstract class AcceptanceTestDriver {
   Future<List<Map<String, dynamic>>> listTodos();
 
   Future<void> restartApp();
+
+  Future<void> checkTodo(String title);
 }

@@ -30,7 +30,11 @@ class _TodoListPageState extends State<TodoListPage> {
     return Scaffold(
         body: ListView(
           children: [
-            for (final todo in _todos) TodoCard(todo),
+            for (final todo in _todos)
+              TodoCard(todo, onCheck: () {
+                _service.checkTodo(todo);
+                reload();
+              })
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -41,14 +45,18 @@ class _TodoListPageState extends State<TodoListPage> {
                   return TodoForm(onSubmit: (title) {
                     _service.addTodo(title);
                     Navigator.pop(context);
-                    setState(() {
-                      _todos = _service.listTodos();
-                    });
+                    reload();
                   });
                 });
           },
           tooltip: 'Add Todo',
           child: const Icon(Icons.add),
         ));
+  }
+
+  void reload() {
+    setState(() {
+      _todos = _service.listTodos();
+    });
   }
 }
