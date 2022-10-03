@@ -3,10 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
+import 'package:fun_todo_list/infra/real_clock.dart';
 
 void main() {
-  TodoListService buildService() =>
-      TodoListService(EventSourcedTodoRepository(InMemoryEventRepository()));
+  TodoListService buildService() => TodoListService(EventSourcedTodoRepository(
+      eventRepository: InMemoryEventRepository(), clock: RealClock()));
 
   group('addTodo', () {
     test('return added todo', () {

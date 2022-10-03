@@ -10,6 +10,7 @@ import 'package:fun_todo_list/pages/todo_list_page.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/json_file_event_repository.dart';
+import 'package:fun_todo_list/infra/real_clock.dart';
 import 'package:fun_todo_list/pages/todo_list_page/todo_card.dart';
 
 import '../test/acceptance_test_dsl.dart';
@@ -69,7 +70,8 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
         jsonFile.deleteSync();
       }
       final eventRepository = JSONFileEventRepository(jsonFile);
-      _todoRepository = EventSourcedTodoRepository(eventRepository);
+      _todoRepository = EventSourcedTodoRepository(
+          eventRepository: eventRepository, clock: RealClock());
     }
 
     await restartApp();

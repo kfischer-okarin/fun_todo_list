@@ -1,3 +1,4 @@
+import 'package:fun_todo_list/domain/clock.dart';
 import 'package:fun_todo_list/domain/event.dart';
 import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:fun_todo_list/domain/todo.dart';
@@ -5,8 +6,12 @@ import 'package:fun_todo_list/domain/todo_repository.dart';
 
 class EventSourcedTodoRepository extends TodoRepository {
   final EventRepository _eventRepository;
+  final Clock _clock;
 
-  EventSourcedTodoRepository(this._eventRepository);
+  EventSourcedTodoRepository(
+      {required EventRepository eventRepository, required Clock clock})
+      : _eventRepository = eventRepository,
+        _clock = clock;
 
   @override
   Iterable<TodoId> get keys => _todos.keys;
