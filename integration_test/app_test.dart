@@ -31,10 +31,12 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   }
 
   @override
-  Future<List<String>> listTodos() async {
+  Future<List<Map<String, dynamic>>> listTodos() async {
     await _openAppIfNecessary();
     final cards = tester.widgetList<TodoCard>(find.byType(TodoCard));
-    return cards.map((card) => card.todo.title).toList();
+    return [
+      for (final card in cards) {'title': card.todo.title, 'checked': false}
+    ];
   }
 
   @override

@@ -23,8 +23,11 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
   }
 
   @override
-  Future<List<String>> listTodos() async {
-    return _service.listTodos().map((todo) => todo.title).toList();
+  Future<List<Map<String, dynamic>>> listTodos() async {
+    return [
+      for (final todo in _service.listTodos())
+        {'title': todo.title, 'checked': false}
+    ];
   }
 
   @override
