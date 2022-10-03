@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-abstract class Id {
+abstract class Id extends Equatable {
   final String value;
 
   const Id(this.value);
@@ -8,9 +9,8 @@ abstract class Id {
   static String generateValue() => const Uuid().v4();
 
   @override
-  bool operator ==(Object other) =>
-      other is Id && runtimeType == other.runtimeType && value == other.value;
+  List<Object?> get props => [value];
 
   @override
-  int get hashCode => Object.hash(runtimeType, value);
+  String toString() => "$runtimeType(${value.substring(0, 3)}...)";
 }
