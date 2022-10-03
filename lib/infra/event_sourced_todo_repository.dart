@@ -21,7 +21,7 @@ class EventSourcedTodoRepository extends TodoRepository {
     var todo = _todos[key];
 
     if (todo != null) {
-      todo = _TodoProxy(_eventRepository, todo);
+      todo = _TodoProxy(_eventRepository, _clock, todo);
     }
 
     return todo;
@@ -30,7 +30,10 @@ class EventSourcedTodoRepository extends TodoRepository {
   @override
   void add(Todo todo) {
     _eventRepository.add(TodoAdded(
-        id: EventId.generate(), todoId: todo.id.value, title: todo.title));
+        id: EventId.generate(),
+        time: _clock.now,
+        todoId: todo.id.value,
+        title: todo.title));
   }
 
   Map<TodoId, Todo> get _todos {
@@ -52,13 +55,15 @@ class EventSourcedTodoRepository extends TodoRepository {
 
 class _TodoProxy extends Todo {
   final EventRepository _eventRepository;
+  final Clock _clock;
 
-  _TodoProxy(this._eventRepository, Todo todo)
+  _TodoProxy(this._eventRepository, this._clock, Todo todo)
       : super(id: todo.id, title: todo.title, checked: todo.checked);
 
   @override
   void check() {
     super.check();
-    _eventRepository.add(TodoChecked(id: EventId.generate(), todoId: id.value));
+    _eventRepository.add(TodoChecked(
+        id: EventId.generate(), time: _clock.now, todoId: id.value));
   }
 }

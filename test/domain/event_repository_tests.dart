@@ -7,8 +7,11 @@ void testEventRepository(EventRepository Function() buildRepository) {
   group('add', () {
     test('adds event', () {
       final repository = buildRepository();
-      const event =
-          TodoAdded(id: EventId('id1'), todoId: 'abc', title: 'Buy milk');
+      final event = TodoAdded(
+          id: const EventId('id1'),
+          time: DateTime.now(),
+          todoId: 'abc',
+          title: 'Buy milk');
 
       repository.add(event);
 
@@ -19,10 +22,16 @@ void testEventRepository(EventRepository Function() buildRepository) {
   group('toList', () {
     test('returns events in addition order', () {
       final repository = buildRepository();
-      const event1 =
-          TodoAdded(id: EventId('id1'), todoId: 'abc', title: 'Buy milk');
-      const event2 =
-          TodoAdded(id: EventId('id2'), todoId: 'abc2', title: 'Buy Eggs');
+      final event1 = TodoAdded(
+          id: const EventId('id1'),
+          time: DateTime.now(),
+          todoId: 'abc',
+          title: 'Buy milk');
+      final event2 = TodoAdded(
+          id: const EventId('id2'),
+          time: DateTime.now(),
+          todoId: 'abc2',
+          title: 'Buy Eggs');
 
       repository.add(event1);
       repository.add(event2);

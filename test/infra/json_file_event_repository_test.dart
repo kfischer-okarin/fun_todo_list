@@ -25,8 +25,11 @@ void main() {
     test('Stores event as JSON', () {
       final repository = buildRepository();
 
-      repository.add(const TodoAdded(
-          id: EventId('id1'), todoId: 'abc', title: 'Buy milk'));
+      repository.add(TodoAdded(
+          id: const EventId('id1'),
+          time: DateTime(2022, 10, 3, 12, 0, 0),
+          todoId: 'abc',
+          title: 'Buy milk'));
 
       expect(
           file.readAsStringSync(),
@@ -34,6 +37,7 @@ void main() {
             {
               "type": "TodoAdded",
               "id": "id1",
+              "time": "2022-10-03T12:00:00.000",
               "todoId": "abc",
               "title": "Buy milk"
             }
@@ -44,8 +48,11 @@ void main() {
   group('list', () {
     test('Reads existing events from file', () {
       var repository = buildRepository();
-      const event =
-          TodoAdded(id: EventId('id1'), todoId: 'abc', title: 'Buy milk');
+      final event = TodoAdded(
+          id: const EventId('id1'),
+          time: DateTime.now(),
+          todoId: 'abc',
+          title: 'Buy milk');
 
       repository.add(event);
 

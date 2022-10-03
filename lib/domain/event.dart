@@ -6,8 +6,9 @@ import 'id.dart';
 @immutable
 abstract class Event extends Equatable {
   final EventId id;
+  final DateTime time;
 
-  const Event({required this.id});
+  const Event({required this.id, required this.time});
 
   static Event fromJson(Map<String, dynamic> json) {
     switch (json['type']) {
@@ -23,12 +24,13 @@ abstract class Event extends Equatable {
   Map<String, dynamic> toJson() => {
         'type': runtimeType.toString(),
         'id': id.value,
+        'time': time.toIso8601String(),
       };
 
   @override
   List<Object?> get props => [id];
 
-  String get propsString => 'id: ${id.value.substring(0, 3)}...';
+  String get propsString => 'id: ${id.value.substring(0, 3)}..., time: $time';
 
   @override
   String toString() {
@@ -41,12 +43,15 @@ class TodoAdded extends Event {
   final String title;
 
   const TodoAdded(
-      {required super.id, required this.todoId, required this.title});
+      {required super.id,
+      required super.time,
+      required this.todoId,
+      required this.title});
 
   TodoAdded.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         todoId = json['todoId'],
-        super(id: EventId(json['id']));
+        super(id: EventId(json['id']), time: DateTime.parse(json['time']));
 
   @override
   Map<String, dynamic> toJson() => {
@@ -66,11 +71,12 @@ class TodoAdded extends Event {
 class TodoChecked extends Event {
   final String todoId;
 
-  const TodoChecked({required super.id, required this.todoId});
+  const TodoChecked(
+      {required super.id, required super.time, required this.todoId});
 
   TodoChecked.fromJson(Map<String, dynamic> json)
       : todoId = json['todoId'],
-        super(id: EventId(json['id']));
+        super(id: EventId(json['id']), time: DateTime.parse(json['time']));
 
   @override
   Map<String, dynamic> toJson() => {
