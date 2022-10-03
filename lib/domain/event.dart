@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'id.dart';
 
-abstract class Event {
+abstract class Event extends Equatable {
   final EventId id;
 
   const Event({required this.id});
@@ -22,16 +24,15 @@ abstract class Event {
       };
 
   @override
-  // ignore: hash_and_equals
-  bool operator ==(Object other) =>
-      other is Event && runtimeType == other.runtimeType && id == other.id;
+  List<Object?> get props => [id];
 }
 
 class TodoAdded extends Event {
   final String todoId;
   final String title;
 
-  TodoAdded({required super.id, required this.todoId, required this.title});
+  const TodoAdded(
+      {required super.id, required this.todoId, required this.title});
 
   TodoAdded.fromJson(Map<String, dynamic> json)
       : title = json['title'],
@@ -46,15 +47,18 @@ class TodoAdded extends Event {
       };
 
   @override
+  List<Object?> get props => [...super.props, todoId, title];
+
+  @override
   String toString() {
-    return 'TodoAdded{id: ${id.value}, title: $title}';
+    return 'TodoAdded{id: ${id.value.substring(0, 3)}..., todoId: ${todoId.substring(0, 3)}..., title: $title}';
   }
 }
 
 class TodoChecked extends Event {
   final String todoId;
 
-  TodoChecked({required super.id, required this.todoId});
+  const TodoChecked({required super.id, required this.todoId});
 
   TodoChecked.fromJson(Map<String, dynamic> json)
       : todoId = json['todoId'],
@@ -67,8 +71,11 @@ class TodoChecked extends Event {
       };
 
   @override
+  List<Object?> get props => [...super.props, todoId];
+
+  @override
   String toString() {
-    return 'TodoChecked{id: ${id.value}}';
+    return 'TodoChecked{id: ${id.value.substring(0, 3)}..., todoId: ${todoId.substring(0, 3)}...}';
   }
 }
 
