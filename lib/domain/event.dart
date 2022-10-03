@@ -38,45 +38,11 @@ abstract class Event extends Equatable {
   }
 }
 
-class TodoAdded extends Event {
-  final String todoId;
-  final String title;
-
-  const TodoAdded(
-      {required super.id,
-      required super.time,
-      required this.todoId,
-      required this.title});
-
-  TodoAdded.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        todoId = json['todoId'],
-        super(id: EventId(json['id']), time: DateTime.parse(json['time']));
-
-  @override
-  Map<String, dynamic> toJson() => {
-        ...super.toJson(),
-        'todoId': todoId,
-        'title': title,
-      };
-
-  @override
-  List<Object?> get props => [...super.props, todoId, title];
-
-  @override
-  String get propsString =>
-      '${super.propsString}, todoId: ${todoId.substring(0, 3)}..., title: $title';
-}
-
-class TodoChecked extends Event {
+abstract class TodoEvent extends Event {
   final String todoId;
 
-  const TodoChecked(
+  const TodoEvent(
       {required super.id, required super.time, required this.todoId});
-
-  TodoChecked.fromJson(Map<String, dynamic> json)
-      : todoId = json['todoId'],
-        super(id: EventId(json['id']), time: DateTime.parse(json['time']));
 
   @override
   Map<String, dynamic> toJson() => {
@@ -90,6 +56,46 @@ class TodoChecked extends Event {
   @override
   String get propsString =>
       '${super.propsString}, todoId: ${todoId.substring(0, 3)}...';
+}
+
+class TodoAdded extends TodoEvent {
+  final String title;
+
+  const TodoAdded(
+      {required super.id,
+      required super.time,
+      required super.todoId,
+      required this.title});
+
+  TodoAdded.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        super(
+            id: EventId(json['id']),
+            time: DateTime.parse(json['time']),
+            todoId: json['todoId']);
+
+  @override
+  Map<String, dynamic> toJson() => {
+        ...super.toJson(),
+        'title': title,
+      };
+
+  @override
+  List<Object?> get props => [...super.props, title];
+
+  @override
+  String get propsString => '${super.propsString}, title: $title';
+}
+
+class TodoChecked extends TodoEvent {
+  const TodoChecked(
+      {required super.id, required super.time, required super.todoId});
+
+  TodoChecked.fromJson(Map<String, dynamic> json)
+      : super(
+            id: EventId(json['id']),
+            time: DateTime.parse(json['time']),
+            todoId: json['todoId']);
 }
 
 class EventId extends Id {
