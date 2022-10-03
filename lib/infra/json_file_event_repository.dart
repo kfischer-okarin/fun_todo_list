@@ -23,7 +23,26 @@ class JSONFileEventRepository extends EventRepository {
   @override
   void add(Event event) {
     _events.add(event);
-    _file.writeAsStringSync(jsonEncode(_events));
+    _file.writeAsStringSync(
+        jsonEncode([for (final event in _events) _toJson(event)]));
+  }
+
+  Map<String, dynamic> _toJson(Event event) {
+    final result = {
+      'type': event.runtimeType.toString(),
+      'id': event.id.value,
+      'time': event.time.toIso8601String(),
+    };
+
+    if (event is TodoEvent) {
+      result['todoId'] = event.todoId;
+    }
+
+    if (event is TodoAdded) {
+      result['title'] = event.title;
+    }
+
+    return result;
   }
 
   Event _fromJson(Map<String, dynamic> json) {

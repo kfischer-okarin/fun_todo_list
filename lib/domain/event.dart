@@ -10,12 +10,6 @@ abstract class Event extends Equatable {
 
   const Event({required this.id, required this.time});
 
-  Map<String, dynamic> toJson() => {
-        'type': runtimeType.toString(),
-        'id': id.value,
-        'time': time.toIso8601String(),
-      };
-
   @override
   List<Object?> get props => [id];
 
@@ -34,12 +28,6 @@ abstract class TodoEvent extends Event {
       {required super.id, required super.time, required this.todoId});
 
   @override
-  Map<String, dynamic> toJson() => {
-        ...super.toJson(),
-        'todoId': todoId,
-      };
-
-  @override
   List<Object?> get props => [...super.props, todoId];
 
   @override
@@ -55,12 +43,6 @@ class TodoAdded extends TodoEvent {
       required super.time,
       required super.todoId,
       required this.title});
-
-  @override
-  Map<String, dynamic> toJson() => {
-        ...super.toJson(),
-        'title': title,
-      };
 
   @override
   List<Object?> get props => [...super.props, title];
