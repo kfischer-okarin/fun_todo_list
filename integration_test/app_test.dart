@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fun_todo_list/domain/clock.dart';
 import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,7 @@ import '../test/acceptance_test_dsl.dart';
 import '../test/acceptance_tests.dart';
 
 class _WidgetTesterDriver implements AcceptanceTestDriver {
+  final Clock _clock = RealClock();
   final WidgetTester tester;
   EventRepository? _eventRepository;
   EventSourcedTodoRepository? _todoRepository;
@@ -45,7 +47,8 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   Future<void> restartApp() async {
     await tester.pumpWidget(App(
         eventRepository: _eventRepository!,
-        todoListService: TodoListService(todoRepository: _todoRepository!),
+        todoListService:
+            TodoListService(clock: _clock, todoRepository: _todoRepository!),
         key: UniqueKey()));
   }
 

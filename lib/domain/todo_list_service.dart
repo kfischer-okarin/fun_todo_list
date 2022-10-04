@@ -1,11 +1,15 @@
+import 'clock.dart';
 import 'todo.dart';
 import 'todo_repository.dart';
 
 class TodoListService {
+  final Clock _clock;
   final TodoRepository _todoRepository;
 
-  TodoListService({required TodoRepository todoRepository})
-      : _todoRepository = todoRepository;
+  TodoListService(
+      {required Clock clock, required TodoRepository todoRepository})
+      : _clock = clock,
+        _todoRepository = todoRepository;
 
   Todo addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);

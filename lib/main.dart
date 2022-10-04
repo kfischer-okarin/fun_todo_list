@@ -21,5 +21,6 @@ void main() async {
       eventRepository: eventRepository, clock: clock);
   runApp(App(
       eventRepository: eventRepository,
-      todoListService: TodoListService(todoRepository: todoRepository)));
+      todoListService:
+          TodoListService(clock: clock, todoRepository: todoRepository)));
 }
