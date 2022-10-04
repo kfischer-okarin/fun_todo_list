@@ -1,17 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:fun_todo_list/domain/clock.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/domain/todo_repository.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
-import 'package:fun_todo_list/infra/real_clock.dart';
+import 'package:fun_todo_list/infra/time_traveling_clock.dart';
 
 import 'acceptance_test_dsl.dart';
 import 'acceptance_tests.dart';
 
 class _TodoListServiceDriver implements AcceptanceTestDriver {
-  final Clock _clock = RealClock();
+  final _clock = TimeTravelingClock();
   late final TodoRepository _todoRepository;
   late TodoListService _service;
 
@@ -49,6 +48,11 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
   Future<void> uncheckTodo(String title) async {
     final todo = _service.listTodos().firstWhere((todo) => todo.title == title);
     _service.uncheckTodo(todo);
+  }
+
+  @override
+  void travelInTimeBy(Duration duration) {
+    _clock.travelBy(duration);
   }
 }
 

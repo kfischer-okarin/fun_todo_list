@@ -36,6 +36,8 @@ class AcceptanceTestDSL {
   }
 
   Future<void> restartApp() async => await driver.restartApp();
+
+  void travelInTimeBy(Duration duration) => driver.travelInTimeBy(duration);
 }
 
 abstract class AcceptanceTestDriver {
@@ -48,4 +50,6 @@ abstract class AcceptanceTestDriver {
   Future<void> checkTodo(String title);
 
   Future<void> uncheckTodo(String title);
+
+  void travelInTimeBy(Duration duration);
 }

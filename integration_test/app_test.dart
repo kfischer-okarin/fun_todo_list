@@ -2,24 +2,23 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fun_todo_list/domain/clock.dart';
-import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:fun_todo_list/app.dart';
-import 'package:fun_todo_list/pages/todo_list_page.dart';
+import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/json_file_event_repository.dart';
-import 'package:fun_todo_list/infra/real_clock.dart';
+import 'package:fun_todo_list/infra/time_traveling_clock.dart';
+import 'package:fun_todo_list/pages/todo_list_page.dart';
 import 'package:fun_todo_list/pages/todo_list_page/todo_card.dart';
 
 import '../test/acceptance_test_dsl.dart';
 import '../test/acceptance_tests.dart';
 
 class _WidgetTesterDriver implements AcceptanceTestDriver {
-  final Clock _clock = RealClock();
+  final _clock = TimeTravelingClock();
   final WidgetTester tester;
   EventRepository? _eventRepository;
   EventSourcedTodoRepository? _todoRepository;
@@ -70,6 +69,11 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await checkTodo(title);
   }
 
+  @override
+  void travelInTimeBy(Duration duration) {
+    _clock.travelBy(duration);
+  }
+
   Future<void> _openAppIfNecessary() async {
     if (find.byType(App).precache()) {
       return;
@@ -83,7 +87,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
       }
       _eventRepository = JSONFileEventRepository(jsonFile);
       _todoRepository = EventSourcedTodoRepository(
-          eventRepository: _eventRepository!, clock: RealClock());
+          eventRepository: _eventRepository!, clock: _clock);
     }
 
     await restartApp();
