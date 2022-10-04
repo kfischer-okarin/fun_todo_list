@@ -19,5 +19,5 @@ void main() async {
   final eventRepository = JSONFileEventRepository(jsonFile);
   final todoRepository = EventSourcedTodoRepository(
       eventRepository: eventRepository, clock: clock);
-  runApp(App(TodoListService(todoRepository)));
+  runApp(App(todoListService: TodoListService(todoRepository)));
 }

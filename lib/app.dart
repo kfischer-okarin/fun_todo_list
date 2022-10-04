@@ -5,14 +5,15 @@ import 'domain/todo_list_service.dart';
 import 'pages/todo_list_page.dart';
 
 class App extends StatelessWidget {
-  final TodoListService _service;
+  final TodoListService _todoListService;
 
-  const App(this._service, {super.key});
+  const App({super.key, required TodoListService todoListService})
+      : _todoListService = todoListService;
 
   @override
   Widget build(BuildContext context) {
     return Provider.value(
-        value: _service,
+        value: _todoListService,
         child: const MaterialApp(
           title: 'Fun To Do List',
           home: TodoListPage(),

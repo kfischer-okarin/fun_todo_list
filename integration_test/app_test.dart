@@ -41,8 +41,8 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
 
   @override
   Future<void> restartApp() async {
-    await tester
-        .pumpWidget(App(TodoListService(_todoRepository!), key: UniqueKey()));
+    await tester.pumpWidget(App(
+        todoListService: TodoListService(_todoRepository!), key: UniqueKey()));
   }
 
   @override
