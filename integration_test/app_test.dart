@@ -45,7 +45,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   Future<void> restartApp() async {
     await tester.pumpWidget(App(
         eventRepository: _eventRepository!,
-        todoListService: TodoListService(_todoRepository!),
+        todoListService: TodoListService(todoRepository: _todoRepository!),
         key: UniqueKey()));
   }
 

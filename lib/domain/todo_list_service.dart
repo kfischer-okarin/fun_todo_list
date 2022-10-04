@@ -4,7 +4,8 @@ import 'todo_repository.dart';
 class TodoListService {
   final TodoRepository _todoRepository;
 
-  TodoListService(this._todoRepository);
+  TodoListService({required TodoRepository todoRepository})
+      : _todoRepository = todoRepository;
 
   Todo addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);

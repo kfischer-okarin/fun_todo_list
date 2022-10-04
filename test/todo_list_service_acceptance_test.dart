@@ -32,7 +32,7 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
 
   @override
   Future<void> restartApp() async {
-    _service = TodoListService(_todoRepository);
+    _service = TodoListService(todoRepository: _todoRepository);
   }
 
   @override

@@ -6,8 +6,9 @@ import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
 import 'package:fun_todo_list/infra/real_clock.dart';
 
 void main() {
-  TodoListService buildService() => TodoListService(EventSourcedTodoRepository(
-      eventRepository: InMemoryEventRepository(), clock: RealClock()));
+  TodoListService buildService() => TodoListService(
+      todoRepository: EventSourcedTodoRepository(
+          eventRepository: InMemoryEventRepository(), clock: RealClock()));
 
   group('addTodo', () {
     test('return added todo', () {
