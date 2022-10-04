@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,6 +19,7 @@ import '../test/acceptance_tests.dart';
 
 class _WidgetTesterDriver implements AcceptanceTestDriver {
   final WidgetTester tester;
+  EventRepository? _eventRepository;
   EventSourcedTodoRepository? _todoRepository;
 
   _WidgetTesterDriver(this.tester);
@@ -42,7 +44,9 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   @override
   Future<void> restartApp() async {
     await tester.pumpWidget(App(
-        todoListService: TodoListService(_todoRepository!), key: UniqueKey()));
+        eventRepository: _eventRepository!,
+        todoListService: TodoListService(_todoRepository!),
+        key: UniqueKey()));
   }
 
   @override
@@ -74,9 +78,9 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
       if (jsonFile.existsSync()) {
         jsonFile.deleteSync();
       }
-      final eventRepository = JSONFileEventRepository(jsonFile);
+      _eventRepository = JSONFileEventRepository(jsonFile);
       _todoRepository = EventSourcedTodoRepository(
-          eventRepository: eventRepository, clock: RealClock());
+          eventRepository: _eventRepository!, clock: RealClock());
     }
 
     await restartApp();
