@@ -15,7 +15,7 @@ void main() async {
 
   final clock = RealClock();
   final documentsDirectory = await getApplicationDocumentsDirectory();
-  final jsonFile = File('${documentsDirectory.path}/todos.json');
+  final jsonFile = File('${documentsDirectory.path}/events.json');
   final eventRepository = JSONFileEventRepository(jsonFile);
   final todoRepository = EventSourcedTodoRepository(
       eventRepository: eventRepository, clock: clock);
