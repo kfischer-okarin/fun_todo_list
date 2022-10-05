@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:fun_todo_list/domain/todo.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/pages/debug_data_view.dart';
 
@@ -18,7 +17,7 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   TodoListService get _service =>
       Provider.of<TodoListService>(context, listen: false);
-  List<Todo> _todos = [];
+  List<TodoView> _todos = [];
 
   @override
   void initState() {
