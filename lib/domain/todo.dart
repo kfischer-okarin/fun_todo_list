@@ -12,6 +12,21 @@ class Todo {
 
   bool get checked => _checked;
 
+  bool checkedAt(DateTime time) {
+    final checkTimesOnSameDay = _checkTimes.where((checkTime) =>
+        checkTime.year == time.year &&
+        checkTime.month == time.month &&
+        checkTime.day == time.day);
+
+    if (checkTimesOnSameDay.isEmpty) {
+      return false;
+    }
+
+    final lastCheckTime = checkTimesOnSameDay.last;
+
+    return time.isAfter(lastCheckTime);
+  }
+
   void check(DateTime time) {
     _checkTimes.add(time);
     _checked = true;
