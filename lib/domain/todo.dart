@@ -3,17 +3,13 @@ import 'id.dart';
 class Todo {
   final TodoId id;
   final String title;
-  late bool _checked;
-  final List<DateTime> _checkTimes = [];
+  final List<DateTime> checkTimes;
 
-  Todo({required this.id, required this.title, checked = false}) {
-    _checked = checked;
-  }
-
-  bool get checked => _checked;
+  Todo({required this.id, required this.title, List<DateTime>? checkTimes})
+      : checkTimes = checkTimes ?? [];
 
   bool checkedAt(DateTime time) {
-    final checkTimesOnSameDay = _checkTimes.where((checkTime) =>
+    final checkTimesOnSameDay = checkTimes.where((checkTime) =>
         checkTime.year == time.year &&
         checkTime.month == time.month &&
         checkTime.day == time.day);
@@ -28,15 +24,13 @@ class Todo {
   }
 
   void check(DateTime time) {
-    _checkTimes.add(time);
-    _checked = true;
+    checkTimes.add(time);
   }
 
   void uncheck() {
-    if (_checkTimes.isNotEmpty) {
-      _checkTimes.removeLast();
+    if (checkTimes.isNotEmpty) {
+      checkTimes.removeLast();
     }
-    _checked = false;
   }
 
   @override

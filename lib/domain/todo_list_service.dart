@@ -36,7 +36,9 @@ class TodoListService {
 
   TodoView _buildTodoView(Todo todo) {
     return TodoView(
-        id: todo.id.value, title: todo.title, checked: todo.checked);
+        id: todo.id.value,
+        title: todo.title,
+        checked: todo.checkedAt(_clock.now));
   }
 }
 

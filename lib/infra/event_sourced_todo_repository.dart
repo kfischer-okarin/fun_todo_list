@@ -62,7 +62,7 @@ class _TodoProxy extends Todo {
   final Clock _clock;
 
   _TodoProxy(this._eventRepository, this._clock, Todo todo)
-      : super(id: todo.id, title: todo.title, checked: todo.checked);
+      : super(id: todo.id, title: todo.title, checkTimes: todo.checkTimes);
 
   @override
   void check(DateTime time) {

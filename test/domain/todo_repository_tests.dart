@@ -35,7 +35,7 @@ void testTodoRepository(TodoRepository Function() buildRepository) {
 
       repository[todo.id]!.check(DateTime.now());
 
-      expect(repository[todo.id]!.checked, true);
+      expect(repository[todo.id]!.checkedAt(DateTime.now()), true);
     });
   });
 }

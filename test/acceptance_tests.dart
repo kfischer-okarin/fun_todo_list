@@ -47,4 +47,17 @@ void acceptanceTests(AcceptanceTest test) {
       {'title': 'Buy eggs', 'checked': false}
     ]);
   });
+
+  test('Todos are reset every day', (dsl) async {
+    await dsl.addTodo('Buy milk');
+    await dsl.checkTodo('Buy milk');
+
+    dsl.travelInTimeBy(const Duration(days: 1));
+
+    await dsl.restartApp();
+    final todos = await dsl.listTodos();
+    expect(todos, [
+      {'title': 'Buy milk', 'checked': false}
+    ]);
+  });
 }
