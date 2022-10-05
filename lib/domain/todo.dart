@@ -4,6 +4,7 @@ class Todo {
   final TodoId id;
   final String title;
   late bool _checked;
+  final List<DateTime> _checkTimes = [];
 
   Todo({required this.id, required this.title, checked = false}) {
     _checked = checked;
@@ -11,11 +12,15 @@ class Todo {
 
   bool get checked => _checked;
 
-  void check() {
+  void check(DateTime time) {
+    _checkTimes.add(time);
     _checked = true;
   }
 
   void uncheck() {
+    if (_checkTimes.isNotEmpty) {
+      _checkTimes.removeLast();
+    }
     _checked = false;
   }
 

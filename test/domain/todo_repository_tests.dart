@@ -33,7 +33,7 @@ void testTodoRepository(TodoRepository Function() buildRepository) {
       final todo = Todo(id: TodoId.generate(), title: 'Buy Milk');
       repository.add(todo);
 
-      repository[todo.id]!.check();
+      repository[todo.id]!.check(DateTime.now());
 
       expect(repository[todo.id]!.checked, true);
     });

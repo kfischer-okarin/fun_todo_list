@@ -24,7 +24,7 @@ class TodoListService {
 
   TodoView checkTodo(TodoView todo) {
     final data = _todoRepository[TodoId(todo.id)]!;
-    data.check();
+    data.check(_clock.now);
     return _buildTodoView(data);
   }
 

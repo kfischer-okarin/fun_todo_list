@@ -46,7 +46,7 @@ class EventSourcedTodoRepository extends TodoRepository {
         if (event is TodoAdded) {
           result[id] = Todo(id: id, title: event.title);
         } else if (event is TodoChecked) {
-          result[id]!.check();
+          result[id]!.check(event.time);
         } else if (event is TodoUnchecked) {
           result[id]!.uncheck();
         }
@@ -65,10 +65,10 @@ class _TodoProxy extends Todo {
       : super(id: todo.id, title: todo.title, checked: todo.checked);
 
   @override
-  void check() {
-    super.check();
-    _eventRepository.add(TodoChecked(
-        id: EventId.generate(), time: _clock.now, todoId: id.value));
+  void check(DateTime time) {
+    super.check(time);
+    _eventRepository
+        .add(TodoChecked(id: EventId.generate(), time: time, todoId: id.value));
   }
 
   @override
