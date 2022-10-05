@@ -19,11 +19,13 @@ class TodoListService {
 
   List<Todo> listTodos() => _todoRepository.values.toList();
 
-  void checkTodo(Todo todo) {
+  Todo checkTodo(Todo todo) {
     todo.check();
+    return todo;
   }
 
-  void uncheckTodo(Todo todo) {
+  Todo uncheckTodo(Todo todo) {
     todo.uncheck();
+    return todo;
   }
 }

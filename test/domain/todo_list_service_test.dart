@@ -39,13 +39,13 @@ void main() {
   });
 
   group('checkTodo', () {
-    test('updates the passed todo', () {
+    test('returns an updated todo', () {
       final service = buildService();
       final todo = service.addTodo('Buy milk');
 
-      service.checkTodo(todo);
+      final updated = service.checkTodo(todo);
 
-      expect(todo.checked, true);
+      expect(updated.checked, true);
     });
 
     test('updates the persisted todo', () {
@@ -61,14 +61,14 @@ void main() {
   });
 
   group('uncheckTodo', () {
-    test('updates the passed todo', () {
+    test('returns an updated todo', () {
       final service = buildService();
       final todo = service.addTodo('Buy milk');
       service.checkTodo(todo);
 
-      service.uncheckTodo(todo);
+      final updated = service.uncheckTodo(todo);
 
-      expect(todo.checked, false);
+      expect(updated.checked, false);
     });
 
     test('updates the persisted todo', () {
