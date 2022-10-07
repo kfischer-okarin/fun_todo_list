@@ -74,6 +74,11 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     _clock.travelBy(duration);
   }
 
+  @override
+  void travelInTimeTo(DateTime time) {
+    _clock.travelTo(time);
+  }
+
   Future<void> _openAppIfNecessary() async {
     if (find.byType(App).precache()) {
       return;

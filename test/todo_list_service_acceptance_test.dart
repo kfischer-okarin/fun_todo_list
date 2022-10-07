@@ -54,6 +54,11 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
   void travelInTimeBy(Duration duration) {
     _clock.travelBy(duration);
   }
+
+  @override
+  void travelInTimeTo(DateTime time) {
+    _clock.travelTo(time);
+  }
 }
 
 void main() {
