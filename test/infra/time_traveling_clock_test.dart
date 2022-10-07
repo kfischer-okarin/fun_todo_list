@@ -24,7 +24,16 @@ void main() {
     clock.travelBy(traveledDuration);
 
     final time2 = clock.now;
-
     expect(time2.difference(time1), greaterThan(traveledDuration));
+  });
+
+  test('travelTo', () {
+    final clock = TimeTravelingClock();
+    final destinationTime = DateTime(2022, 10, 6, 13, 33, 0);
+
+    clock.travelTo(destinationTime);
+
+    final time = clock.now;
+    expect(time.isAfter(destinationTime), true);
   });
 }

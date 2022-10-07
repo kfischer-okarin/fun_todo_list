@@ -9,7 +9,11 @@ class TimeTravelingClock extends Clock {
   DateTime get now => _originTime.add(_durationSinceCreation);
 
   void travelBy(Duration duration) {
-    _originTime = _originTime.add(duration);
+    travelTo(_originTime.add(duration));
+  }
+
+  void travelTo(DateTime time) {
+    _originTime = time;
   }
 
   Duration get _durationSinceCreation =>
