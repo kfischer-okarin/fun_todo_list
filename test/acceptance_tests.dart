@@ -6,9 +6,7 @@ void acceptanceTests(AcceptanceTest test) {
     await dsl.addTodo('Buy milk');
 
     final todos = await dsl.listTodos();
-    expect(todos, [
-      {'title': 'Buy milk', 'checked': false}
-    ]);
+    expect(todos, [const Todo(title: 'Buy milk', checked: false)]);
   });
 
   test('Todos should be persisted over sessions', (dsl) async {
@@ -16,9 +14,7 @@ void acceptanceTests(AcceptanceTest test) {
     await dsl.restartApp();
 
     final todos = await dsl.listTodos();
-    expect(todos, [
-      {'title': 'Buy milk', 'checked': false}
-    ]);
+    expect(todos, [const Todo(title: 'Buy milk', checked: false)]);
   });
 
   test('Todos can be checked', (dsl) async {
@@ -29,8 +25,8 @@ void acceptanceTests(AcceptanceTest test) {
 
     final todos = await dsl.listTodos();
     expect(todos, [
-      {'title': 'Buy milk', 'checked': false},
-      {'title': 'Buy eggs', 'checked': true}
+      const Todo(title: 'Buy milk', checked: false),
+      const Todo(title: 'Buy eggs', checked: true),
     ]);
   });
 
@@ -43,8 +39,8 @@ void acceptanceTests(AcceptanceTest test) {
 
     final todos = await dsl.listTodos();
     expect(todos, [
-      {'title': 'Buy milk', 'checked': false},
-      {'title': 'Buy eggs', 'checked': false}
+      const Todo(title: 'Buy milk', checked: false),
+      const Todo(title: 'Buy eggs', checked: false),
     ]);
   });
 
@@ -57,7 +53,7 @@ void acceptanceTests(AcceptanceTest test) {
     await dsl.restartApp();
     final todos = await dsl.listTodos();
     expect(todos, [
-      {'title': 'Buy milk', 'checked': false}
+      const Todo(title: 'Buy milk', checked: false),
     ]);
   });
 }

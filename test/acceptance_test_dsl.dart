@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
 /// Run the defined acceptance tests with the specified driver
@@ -24,8 +26,7 @@ class AcceptanceTestDSL {
     await driver.addTodo(title);
   }
 
-  Future<List<Map<String, dynamic>>> listTodos() async =>
-      await driver.listTodos();
+  Future<List<Todo>> listTodos() async => await driver.listTodos();
 
   Future<void> checkTodo(String title) async {
     await driver.checkTodo(title);
@@ -45,7 +46,7 @@ class AcceptanceTestDSL {
 abstract class AcceptanceTestDriver {
   Future<void> addTodo(String title);
 
-  Future<List<Map<String, dynamic>>> listTodos();
+  Future<List<Todo>> listTodos();
 
   Future<void> restartApp();
 
@@ -56,4 +57,20 @@ abstract class AcceptanceTestDriver {
   void travelInTimeBy(Duration duration);
 
   void travelInTimeTo(DateTime time);
+}
+
+class Todo extends Equatable {
+  final String title;
+  final bool checked;
+
+  const Todo({
+    required this.title,
+    required this.checked,
+  });
+
+  @override
+  List<Object?> get props => [title, checked];
+
+  @override
+  bool get stringify => true;
 }

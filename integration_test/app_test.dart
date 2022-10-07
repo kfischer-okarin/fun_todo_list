@@ -36,7 +36,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> listTodos() async {
+  Future<List<Todo>> listTodos() async {
     await _openAppIfNecessary();
     final cards = tester.widgetList<TodoCard>(find.byType(TodoCard));
     return [for (final card in cards) _parseTodoCard(card)];
@@ -98,7 +98,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await restartApp();
   }
 
-  Map<String, dynamic> _parseTodoCard(TodoCard card) {
+  Todo _parseTodoCard(TodoCard card) {
     final cardFinder = find.byWidgetPredicate((widget) => widget == card);
     final title = find
         .descendant(of: cardFinder, matching: find.byType(Text))
@@ -110,10 +110,10 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
         .evaluate()
         .single
         .widget as Checkbox;
-    return {
-      'title': title.data,
-      'checked': checkbox.value,
-    };
+    return Todo(
+      title: title.data!,
+      checked: checkbox.value!,
+    );
   }
 
   void _assertPage(Type pageType) {
