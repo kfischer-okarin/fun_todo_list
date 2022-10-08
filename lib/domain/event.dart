@@ -61,6 +61,25 @@ class TodoUnchecked extends TodoEvent {
       {required super.id, required super.time, required super.todoId});
 }
 
+class ReminderScheduled extends TodoEvent {
+  final String reminderId;
+  final DateTime reminderTime;
+
+  const ReminderScheduled(
+      {required super.id,
+      required super.time,
+      required super.todoId,
+      required this.reminderId,
+      required this.reminderTime});
+
+  @override
+  List<Object?> get props => [...super.props, reminderId, reminderTime];
+
+  @override
+  String get propsString =>
+      '${super.propsString}, reminderId: $reminderId, reminderTime: $reminderTime';
+}
+
 class EventId extends Id {
   const EventId(String value) : super(value);
 
