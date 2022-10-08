@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:fun_todo_list/domain/reminder_repository.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
 import 'package:fun_todo_list/domain/todo_repository.dart';
+import 'package:fun_todo_list/infra/event_sourced_reminder_repository.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
 import 'package:fun_todo_list/infra/time_traveling_clock.dart';
@@ -11,12 +13,16 @@ import 'acceptance_tests.dart';
 
 class _TodoListServiceDriver implements AcceptanceTestDriver {
   final _clock = TimeTravelingClock();
+  late final ReminderRepository _reminderRepository;
   late final TodoRepository _todoRepository;
   late TodoListService _service;
 
   _TodoListServiceDriver() {
+    final eventRepository = InMemoryEventRepository();
+    _reminderRepository = EventSourcedReminderRepository(
+        eventRepository: eventRepository, clock: _clock);
     _todoRepository = EventSourcedTodoRepository(
-        eventRepository: InMemoryEventRepository(), clock: _clock);
+        eventRepository: eventRepository, clock: _clock);
     restartApp();
   }
 
@@ -35,7 +41,10 @@ class _TodoListServiceDriver implements AcceptanceTestDriver {
 
   @override
   Future<void> restartApp() async {
-    _service = TodoListService(clock: _clock, todoRepository: _todoRepository);
+    _service = TodoListService(
+        clock: _clock,
+        reminderRepository: _reminderRepository,
+        todoRepository: _todoRepository);
   }
 
   @override

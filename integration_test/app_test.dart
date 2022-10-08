@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:fun_todo_list/app.dart';
 import 'package:fun_todo_list/domain/event_repository.dart';
 import 'package:fun_todo_list/domain/todo_list_service.dart';
+import 'package:fun_todo_list/infra/event_sourced_reminder_repository.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/json_file_event_repository.dart';
 import 'package:fun_todo_list/infra/time_traveling_clock.dart';
@@ -20,8 +21,10 @@ import '../test/acceptance_tests.dart';
 class _WidgetTesterDriver implements AcceptanceTestDriver {
   final _clock = TimeTravelingClock();
   final WidgetTester tester;
-  EventRepository? _eventRepository;
-  EventSourcedTodoRepository? _todoRepository;
+  bool _started = false;
+  late final EventRepository _eventRepository;
+  late final EventSourcedTodoRepository _todoRepository;
+  late final EventSourcedReminderRepository _reminderRepository;
 
   _WidgetTesterDriver(this.tester);
 
@@ -45,9 +48,11 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   @override
   Future<void> restartApp() async {
     await tester.pumpWidget(App(
-        eventRepository: _eventRepository!,
-        todoListService:
-            TodoListService(clock: _clock, todoRepository: _todoRepository!),
+        eventRepository: _eventRepository,
+        todoListService: TodoListService(
+            clock: _clock,
+            reminderRepository: _reminderRepository,
+            todoRepository: _todoRepository),
         key: UniqueKey()));
   }
 
@@ -84,15 +89,18 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
       return;
     }
 
-    if (_todoRepository == null) {
+    if (!_started) {
       final documentsDirectory = await getApplicationDocumentsDirectory();
       final jsonFile = File('${documentsDirectory.path}/todos.json');
       if (jsonFile.existsSync()) {
         jsonFile.deleteSync();
       }
       _eventRepository = JSONFileEventRepository(jsonFile);
+      _reminderRepository = EventSourcedReminderRepository(
+          eventRepository: _eventRepository, clock: _clock);
       _todoRepository = EventSourcedTodoRepository(
           eventRepository: _eventRepository!, clock: _clock);
+      _started = true;
     }
 
     await restartApp();

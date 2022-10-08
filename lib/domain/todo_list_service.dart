@@ -1,16 +1,21 @@
 import 'package:flutter/foundation.dart';
 
 import 'clock.dart';
+import 'reminder_repository.dart';
 import 'todo.dart';
 import 'todo_repository.dart';
 
 class TodoListService {
   final Clock _clock;
+  final ReminderRepository _reminderRepository;
   final TodoRepository _todoRepository;
 
   TodoListService(
-      {required Clock clock, required TodoRepository todoRepository})
+      {required Clock clock,
+      required TodoRepository todoRepository,
+      required ReminderRepository reminderRepository})
       : _clock = clock,
+        _reminderRepository = reminderRepository,
         _todoRepository = todoRepository;
 
   TodoView addTodo(String title) {
