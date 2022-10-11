@@ -36,6 +36,9 @@ class AcceptanceTestDSL {
     await driver.uncheckTodo(title);
   }
 
+  Future<List<PendingReminder>> listPendingReminders() async =>
+      await driver.listPendingReminders();
+
   Future<void> restartApp() async => await driver.restartApp();
 
   void travelInTimeBy(Duration duration) => driver.travelInTimeBy(duration);
@@ -54,6 +57,8 @@ abstract class AcceptanceTestDriver {
 
   Future<void> uncheckTodo(String title);
 
+  Future<List<PendingReminder>> listPendingReminders();
+
   void travelInTimeBy(Duration duration);
 
   void travelInTimeTo(DateTime time);
@@ -70,6 +75,22 @@ class Todo extends Equatable {
 
   @override
   List<Object?> get props => [title, checked];
+
+  @override
+  bool get stringify => true;
+}
+
+class PendingReminder extends Equatable {
+  final String todo;
+  final DateTime time;
+
+  const PendingReminder({
+    required this.todo,
+    required this.time,
+  });
+
+  @override
+  List<Object?> get props => [todo, time];
 
   @override
   bool get stringify => true;
