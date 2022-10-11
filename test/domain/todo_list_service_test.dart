@@ -118,5 +118,23 @@ void main() {
           service.listTodos().firstWhere((todo) => todo.id == todo.id);
       expect(persistedTodo.checked, false);
     });
+
+    test('adds a reminder for this day', () {
+      final clock = TimeTravelingClock();
+      final now = DateTime(2022, 10, 11, 11, 30, 0);
+      final tomorrow = DateTime(2022, 10, 12, 0, 0, 0);
+      clock.travelTo(now);
+      final service = buildService(clock: clock);
+      final todo = service.addTodo('Buy milk');
+      service.checkTodo(todo);
+      service.uncheckTodo(todo);
+
+      clock.travelTo(tomorrow);
+      final reminders = service.listPendingReminders();
+      final reminder = reminders.first;
+      expect(reminder.todoId, todo.id);
+      expect(reminder.time.isAfter(now), true);
+      expect(reminder.time.isBefore(tomorrow), true);
+    });
   });
 }

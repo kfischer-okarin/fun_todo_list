@@ -22,10 +22,7 @@ class TodoListService {
   TodoView addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);
     _todoRepository.add(todo);
-    _reminderRepository.add(Reminder(
-        id: ReminderId.generate(),
-        todoId: todo.id,
-        time: _clock.now.add(const Duration(minutes: 1))));
+    _scheduleReminderFor(todo);
     return _buildTodoView(todo);
   }
 
@@ -48,6 +45,7 @@ class TodoListService {
   TodoView uncheckTodo(TodoView todo) {
     final data = _todoRepository[TodoId(todo.id)]!;
     data.uncheck();
+    _scheduleReminderFor(data);
     return _buildTodoView(data);
   }
 
@@ -62,6 +60,13 @@ class TodoListService {
         id: todo.id.value,
         title: todo.title,
         checked: todo.checkedAt(_clock.now));
+  }
+
+  void _scheduleReminderFor(Todo todo) {
+    _reminderRepository.add(Reminder(
+        id: ReminderId.generate(),
+        todoId: todo.id,
+        time: _clock.now.add(const Duration(minutes: 1))));
   }
 }
 
