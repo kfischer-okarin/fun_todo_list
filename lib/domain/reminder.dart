@@ -10,6 +10,8 @@ class Reminder extends Equatable {
 
   const Reminder({required this.id, required this.todoId, required this.time});
 
+  bool isDue(DateTime now) => time.isBefore(now);
+
   @override
   List<Object?> get props => [id, todoId, time];
 

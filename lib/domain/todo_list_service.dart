@@ -45,7 +45,7 @@ class TodoListService {
   }
 
   List<ReminderView> listPendingReminders() => _reminderRepository.values
-      .where((reminder) => reminder.time.isBefore(_clock.now))
+      .where((reminder) => reminder.isDue(_clock.now))
       .map((reminder) =>
           ReminderView(todoId: reminder.todoId.value, time: reminder.time))
       .toList();
