@@ -19,6 +19,29 @@ void testReminderRepository(ReminderRepository Function() buildRepository) {
     });
   });
 
+  group('remove', () {
+    test('remove reminder', () {
+      final repository = buildRepository();
+      final reminder = Reminder(
+          id: ReminderId.generate(),
+          todoId: TodoId.generate(),
+          time: DateTime.now().add(const Duration(hours: 12)));
+      repository.add(reminder);
+
+      final removed = repository.remove(reminder.id);
+
+      expect(removed, reminder);
+      expect(repository[reminder.id], isNull);
+    });
+
+    test('remove non existing reminder', () {
+      final repository = buildRepository();
+      final removed = repository.remove(ReminderId.generate());
+
+      expect(removed, isNull);
+    });
+  });
+
   group('values', () {
     test('returns all added reminders', () {
       final repository = buildRepository();

@@ -80,6 +80,19 @@ class ReminderScheduled extends TodoEvent {
       '${super.propsString}, reminderId: $reminderId, reminderTime: $reminderTime';
 }
 
+class ReminderCancelled extends Event {
+  final String reminderId;
+
+  const ReminderCancelled(
+      {required super.id, required super.time, required this.reminderId});
+
+  @override
+  List<Object?> get props => [...super.props, reminderId];
+
+  @override
+  String get propsString => '${super.propsString}, reminderId: $reminderId';
+}
+
 class EventId extends Id {
   const EventId(String value) : super(value);
 

@@ -34,6 +34,21 @@ class EventSourcedReminderRepository extends ReminderRepository {
         reminderTime: reminder.time));
   }
 
+  @override
+  Reminder? remove(Object? key) {
+    final reminders = _reminders;
+    if (reminders.containsKey(key)) {
+      final reminder = reminders[key]!;
+      _eventRepository.add(ReminderCancelled(
+          id: EventId.generate(),
+          time: _clock.now,
+          reminderId: reminder.id.value));
+      return reminder;
+    }
+
+    return null;
+  }
+
   Map<ReminderId, Reminder> get _reminders {
     Map<ReminderId, Reminder> result = {};
 
@@ -43,6 +58,8 @@ class EventSourcedReminderRepository extends ReminderRepository {
 
         result[id] = Reminder(
             id: id, todoId: TodoId(event.todoId), time: event.reminderTime);
+      } else if (event is ReminderCancelled) {
+        result.remove(ReminderId(event.reminderId));
       }
     }
 
