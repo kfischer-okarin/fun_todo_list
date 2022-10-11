@@ -6,17 +6,18 @@ import 'package:fun_todo_list/infra/event_sourced_reminder_repository.dart';
 import 'package:fun_todo_list/infra/event_sourced_todo_repository.dart';
 import 'package:fun_todo_list/infra/in_memory_event_repository.dart';
 import 'package:fun_todo_list/infra/real_clock.dart';
+import 'package:fun_todo_list/infra/time_traveling_clock.dart';
 
 void main() {
-  TodoListService buildService() {
-    final Clock clock = RealClock();
+  TodoListService buildService({Clock? clock}) {
+    final Clock serviceClock = clock ?? RealClock();
     final eventRepository = InMemoryEventRepository();
     return TodoListService(
-        clock: clock,
+        clock: serviceClock,
         reminderRepository: EventSourcedReminderRepository(
-            eventRepository: eventRepository, clock: clock),
+            eventRepository: eventRepository, clock: serviceClock),
         todoRepository: EventSourcedTodoRepository(
-            eventRepository: eventRepository, clock: clock));
+            eventRepository: eventRepository, clock: serviceClock));
   }
 
   group('addTodo', () {
@@ -26,6 +27,24 @@ void main() {
       final todo = service.addTodo('Buy milk');
 
       expect(todo.title, 'Buy milk');
+    });
+
+    test('schedules a reminder between now and tomorrow', () {
+      final clock = TimeTravelingClock();
+      final now = DateTime(2022, 10, 11, 11, 30, 0);
+      final tomorrow = DateTime(2022, 10, 12, 0, 0, 0);
+      clock.travelTo(now);
+      final service = buildService(clock: clock);
+      final todo = service.addTodo('Buy milk');
+
+      expect(service.listPendingReminders(), isEmpty);
+
+      clock.travelTo(tomorrow);
+      final reminders = service.listPendingReminders();
+      final reminder = reminders.first;
+      expect(reminder.todoId, todo.id);
+      expect(reminder.time.isAfter(now), true);
+      expect(reminder.time.isBefore(tomorrow), true);
     });
   });
 

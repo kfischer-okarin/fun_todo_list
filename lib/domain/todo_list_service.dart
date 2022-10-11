@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:fun_todo_list/domain/reminder.dart';
 
 import 'clock.dart';
 import 'reminder_repository.dart';
@@ -21,6 +22,10 @@ class TodoListService {
   TodoView addTodo(String title) {
     final todo = Todo(id: TodoId.generate(), title: title);
     _todoRepository.add(todo);
+    _reminderRepository.add(Reminder(
+        id: ReminderId.generate(),
+        todoId: todo.id,
+        time: _clock.now.add(const Duration(minutes: 1))));
     return _buildTodoView(todo);
   }
 
@@ -39,6 +44,12 @@ class TodoListService {
     return _buildTodoView(data);
   }
 
+  List<ReminderView> listPendingReminders() => _reminderRepository.values
+      .where((reminder) => reminder.time.isBefore(_clock.now))
+      .map((reminder) =>
+          ReminderView(todoId: reminder.todoId.value, time: reminder.time))
+      .toList();
+
   TodoView _buildTodoView(Todo todo) {
     return TodoView(
         id: todo.id.value,
@@ -55,4 +66,12 @@ class TodoView {
 
   const TodoView(
       {required this.id, required this.title, required this.checked});
+}
+
+@immutable
+class ReminderView {
+  final String todoId;
+  final DateTime time;
+
+  const ReminderView({required this.todoId, required this.time});
 }
