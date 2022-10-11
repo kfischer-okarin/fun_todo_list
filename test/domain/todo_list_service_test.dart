@@ -81,6 +81,19 @@ void main() {
           service.listTodos().firstWhere((todo) => todo.id == todo.id);
       expect(persistedTodo.checked, true);
     });
+
+    test('removes scheduled reminder for this day', () {
+      final clock = TimeTravelingClock();
+      final now = DateTime(2022, 10, 11, 11, 30, 0);
+      final tomorrow = DateTime(2022, 10, 12, 0, 0, 0);
+      clock.travelTo(now);
+      final service = buildService(clock: clock);
+      final todo = service.addTodo('Buy milk');
+      service.checkTodo(todo);
+
+      clock.travelTo(tomorrow);
+      expect(service.listPendingReminders(), isEmpty);
+    });
   });
 
   group('uncheckTodo', () {

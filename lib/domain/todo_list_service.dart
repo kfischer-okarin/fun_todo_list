@@ -35,6 +35,13 @@ class TodoListService {
   TodoView checkTodo(TodoView todo) {
     final data = _todoRepository[TodoId(todo.id)]!;
     data.check(_clock.now);
+
+    final reminders = _reminderRepository.values.where((reminder) =>
+        reminder.todoId == data.id && !reminder.isDue(_clock.now));
+    for (final reminder in reminders) {
+      _reminderRepository.remove(reminder.id);
+    }
+
     return _buildTodoView(data);
   }
 
