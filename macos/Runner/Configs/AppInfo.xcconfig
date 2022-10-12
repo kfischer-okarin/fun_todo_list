@@ -8,7 +8,7 @@
 PRODUCT_NAME = fun_todo_list
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.funTodoList
+PRODUCT_BUNDLE_IDENTIFIER = kfischer_okarin.funTodoList
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 kfischer_okarin. All rights reserved.

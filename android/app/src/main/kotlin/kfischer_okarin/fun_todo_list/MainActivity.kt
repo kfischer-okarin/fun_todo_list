@@ -1,4 +1,4 @@
-package com.example.fun_todo_list
+package kfischer_okarin.fun_todo_list
 
 import io.flutter.embedding.android.FlutterActivity
 

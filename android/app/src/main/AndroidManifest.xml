@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fun_todo_list">
+    package="kfischer_okarin.fun_todo_list">
    <application
         android:label="fun_todo_list"
         android:name="${applicationName}"
