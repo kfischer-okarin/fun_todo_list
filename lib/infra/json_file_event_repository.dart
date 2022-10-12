@@ -48,6 +48,14 @@ class JSONFileEventRepository extends EventRepository {
       result['title'] = event.title;
     }
 
+    if (event is ReminderScheduled) {
+      result['reminderId'] = event.reminderId;
+      result['reminderTime'] = event.reminderTime.toIso8601String();
+    }
+    if (event is ReminderCancelled) {
+      result['reminderId'] = event.reminderId;
+    }
+
     return result;
   }
 
@@ -62,6 +70,16 @@ class JSONFileEventRepository extends EventRepository {
         return TodoChecked(id: id, time: time, todoId: json['todoId']);
       case 'TodoUnchecked':
         return TodoUnchecked(id: id, time: time, todoId: json['todoId']);
+      case 'ReminderScheduled':
+        return ReminderScheduled(
+            id: id,
+            time: time,
+            todoId: json['todoId'],
+            reminderId: json['reminderId'],
+            reminderTime: DateTime.parse(json['reminderTime']));
+      case 'ReminderCancelled':
+        return ReminderCancelled(
+            id: id, time: time, reminderId: json['reminderId']);
       default:
         throw Exception('Unknown event type: ${json['type']}');
     }

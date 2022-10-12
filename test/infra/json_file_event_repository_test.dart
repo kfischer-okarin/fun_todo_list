@@ -33,6 +33,14 @@ void main() {
           id: const EventId('2'), time: DateTime(2020, 1, 2), todoId: '1'),
       TodoUnchecked(
           id: const EventId('3'), time: DateTime(2020, 1, 3), todoId: '1'),
+      ReminderScheduled(
+          id: const EventId('4'),
+          time: DateTime(2020, 1, 4),
+          todoId: '1',
+          reminderId: '1',
+          reminderTime: DateTime(2020, 1, 5)),
+      ReminderCancelled(
+          id: const EventId('5'), time: DateTime(2020, 1, 6), reminderId: '1'),
     ];
 
     for (final event in events) {
